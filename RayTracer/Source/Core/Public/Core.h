@@ -13,8 +13,15 @@
 
 #include "Log.h"
 
-// Logging
 #define LOG(...) Log::PrintLine(__VA_ARGS__)
+
+#ifdef NDEBUG
+    #define DEBUG_BREAK()
+    #define CHECK(expression)
+#else
+    #define DEBUG_BREAK() __debugbreak()
+    #define CHECK(expression) if(!(expression)) { DEBUG_BREAK(); }
+#endif
 
 // Type aliases
 using uint8 = uint8_t;
