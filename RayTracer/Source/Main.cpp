@@ -1,61 +1,9 @@
-﻿#include "Ray.h"
-#include "RayTracer.h"
-#include "Vector.h"
+﻿#include "Hittable.h"
 #include "Image.h"
-
-float CalcRaySphereIntersection(const Ray& ray, const Point3& sphere_center, float sphere_radius)
-{
-    // Sphere equation: x^2 + y^2 + z^2 = R^2
-    // Or (x - C_x)^2 + (y - C_y)^2 + (z - C_z)^2 = r^2
-    // <=> (P(t)-C) dot (P(t)-C) = r^2
-    // If we insert the ray equation we get:
-    // t^2b^2+2tb⋅(A−C)+(A−C)⋅(A−C)−r^2=0
-    // Which we can then solve for t to get the intersection points.
-    // Depending on the discriminant we then know if we hit the sphere:
-    // negative -> no real solution -> 0 intersections
-    // zero -> exactly one real solution -> 1 intersection
-    // positive -> two real solutions -> 2 intersections
-    // School maths at its finest 8)
-     
-    Vec3 center_to_origin = ray.GetOrigin() - sphere_center;
-    float a = Dot(ray.GetDirection(), ray.GetDirection());
-    float b = 2.0f * Dot(center_to_origin, ray.GetDirection());
-    float c = Dot(center_to_origin, center_to_origin) - sphere_radius * sphere_radius;
-    float discriminant = b * b - 4.0f * a * c;
-    
-    if(discriminant < 0.0f)
-    {
-        return -1.0f;
-    }
-    else
-    {
-        return (-b - sqrtf(discriminant)) / (2.0f * a);
-    }
-}
-
-Color CalcRayColor(const Ray& r)
-{
-    Vec3 direction = MakeUnitVec(r.GetDirection());
-
-    Vec3 sphere_center = Point3(0.0f, 0.0f, -1.0f);
-    float sphere_radius = 0.5f;
-
-    float t = CalcRaySphereIntersection(r, sphere_center, sphere_radius);
-
-    if(t > 0.0f) // We hit the sphere
-    {
-        Vec3 normal = MakeUnitVec(r.At(t) - Vec3(sphere_center));
-        return 0.5f * Color(normal.x_ + 1.0f, normal.y_ + 1.0f, normal.z_ + 1.0f);  // Normals are [-1,1], so we have to scale to [0,1] for color!
-    }
-
-    // linearly blend white and blue depending on the height of the y coordinate after scaling the ray direction to unit length
-    // -> -1.0f <= y <= 1.0f
-    t = 0.5f * (direction.y_ + 1.0f); // scale to [0.0f, 1.0f] range
-
-    // then do a simple lerp between the two colors
-    static const Color other_color = Color(0.5f, 0.7f, 1.0f);
-    return (1.0f - t) * Color::WHITE + t * other_color;
-}
+#include "Ray.h"
+#include "RayTracer.h"
+#include "Sphere.h"
+#include "Vector.h"
 
 int main()
 {
@@ -76,20 +24,25 @@ int main()
     Point3 camera_pos;
     Vec3 lower_left_corner = camera_pos - horizontal_axis * 0.5f - vertical_axis * 0.5f - Vec3(0.0f, 0.0f, focal_length);
 
+    // World
+    HittableList scene_objects;
+    scene_objects.Add(MakeShared<Sphere>(Vec3(0.0f, 0.0f, -1.0f), 0.5f));
+    scene_objects.Add(MakeShared<Sphere>(Vec3(0.0f, -100.5f, -1.0f), 100.0f));
+
     // Ray tracing - Shoot a ray into the scene for each pixel
     for (size_t j = image.GetHeight() - 1; ; --j)
     {
-        std::cout << "\rScanlines remaining: " << j << ' ' << std::flush;
+        LOG("Scanlines remaining: %i", j);
         for (size_t i = 0; i < image_width; ++i)
         {
             // Coordinates in viewport space
             float u = static_cast<float>(i) / (image_width - 1.0f);
             float v = static_cast<float>(j) / (image_height - 1.0f);
 
+            // Cast ray into the scene
             const Vec3 ray_direction = lower_left_corner + u * horizontal_axis + v * vertical_axis - camera_pos;
             Ray ray(camera_pos, ray_direction);
-
-            Color pixel_color = CalcRayColor(ray);
+            Color pixel_color = RayTracer::CalcRayColor(ray, scene_objects);
 
             // Convert to pixel coordinates
             size_t pixel_y = image.GetHeight() - 1 - j;
@@ -105,7 +58,7 @@ int main()
         }
     }
 
-    image.Save("output.png");
-
-    std::cout << "\nDone.\n";
+    String output_name = "output.png";
+    image.Save(output_name.c_str());
+    LOG("Done! Saved output image as '%s'", output_name);
 }
