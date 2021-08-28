@@ -1,12 +1,26 @@
 #include "RayTracer.h"
+#include "Vector.h"
 
-#include "iosfwd"
-
-void WritePixel(std::ostream& out_stream, const Color& color)
+Color RayTracer::CalcRayColor(const Ray& r, const IHittable& scene_objects)
 {
-    // Convert into [0, 255] range
-    uint32 r = static_cast<uint32>(255.999 * color.x_);
-    uint32 g = static_cast<uint32>(255.999 * color.y_);
-    uint32 b = static_cast<uint32>(255.999 * color.z_);
-    std::cout << r << ' ' << g << ' ' << b << '\n';
+    const float t_min = 0.0f;
+    const float t_max = INF;
+    HitRecord hit_record;
+
+    // Check for object intersections
+    if (scene_objects.Hit(r, t_min, t_max, hit_record))
+    {
+        return 0.5f * (hit_record.surface_normal_ + Color::WHITE);
+    }
+
+    // Else calculate background color
+
+    // linearly blend white and blue depending on the height of the y coordinate after scaling the ray direction to unit length
+    // -> -1.0f <= y <= 1.0f
+    Vec3 direction = MakeUnitVec(r.GetDirection());
+    float t = 0.5f * (direction.y_ + 1.0f); // scale to [0.0f, 1.0f] range
+
+    // then do a simple lerp between the two colors
+    static const Color other_color = Color(0.5f, 0.7f, 1.0f);
+    return (1.0f - t) * Color::WHITE + t * other_color;
 }

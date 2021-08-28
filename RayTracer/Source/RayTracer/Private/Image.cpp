@@ -30,7 +30,7 @@ void Image::SetPixel(size_t x, size_t y, Color color)
 
 void Image::Save(const char* path)
 {
-    static const int bytes_per_row = GetWidth() * sizeof(PixelData);
+    static const int bytes_per_row = static_cast<int>(GetWidth() * sizeof(PixelData));
     static const int num_components = 4;    // rgba
     int result = stbi_write_png(path, static_cast<int>(GetWidth()), static_cast<int>(GetHeight()), num_components, static_cast<void*>(data_), bytes_per_row);
     assert(result != 0);

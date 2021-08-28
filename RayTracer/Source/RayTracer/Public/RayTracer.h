@@ -1,4 +1,8 @@
 #pragma once
-#include "Source/Math/Public/Vector.h"
+#include "Ray.h"
+#include "Hittable.h"
 
-void WritePixel(std::ostream& out_stream, const Color& color);
+struct RayTracer
+{
+    static Color CalcRayColor(const Ray& r, const IHittable& scene_objects);
+};
