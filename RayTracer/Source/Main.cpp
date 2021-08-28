@@ -29,7 +29,7 @@ float CalcRaySphereIntersection(const Ray& ray, const Point3& sphere_center, flo
     }
     else
     {
-        return (-b - sqrtf(discriminant) * 0.5f * a);
+        return (-b - sqrtf(discriminant)) / (2.0f * a);
     }
 }
 
