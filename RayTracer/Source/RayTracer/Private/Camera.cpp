@@ -10,7 +10,7 @@ Camera::Camera(float aspect_ratio, float focal_length)
     lower_left_corner_ = camera_pos_ - horizontal_axis_ * 0.5f - vertical_axis_ * 0.5f - Vec3(0.0f, 0.0f, focal_length_);
 }
 
-Ray Camera::GetRay(float u, float v)
+Ray Camera::GetRay(float u, float v) const
 {
     const Vec3 ray_direction = lower_left_corner_ + u * horizontal_axis_ + v * vertical_axis_ - camera_pos_;
     return Ray(camera_pos_, ray_direction);

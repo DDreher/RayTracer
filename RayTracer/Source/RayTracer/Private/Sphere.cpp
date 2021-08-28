@@ -50,3 +50,5 @@ bool Sphere::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_record) 
     hit_record.SetSurfaceNormal(r, outside_normal);
     return true;
 }
+
+

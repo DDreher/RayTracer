@@ -20,9 +20,9 @@ void Image::SetPixel(size_t x, size_t y, Color color)
     CHECK(y >= 0 && y < GetHeight());
 
     // Convert into [0, 255] range
-    uint8 r = static_cast<uint32>(255.999 * color.x_);
-    uint8 g = static_cast<uint32>(255.999 * color.y_);
-    uint8 b = static_cast<uint32>(255.999 * color.z_);
+    uint8 r = static_cast<uint32>(256.0f * Clamp(color.x_, 0.0f, 0.999f));
+    uint8 g = static_cast<uint32>(256.0f * Clamp(color.y_, 0.0f, 0.999f));
+    uint8 b = static_cast<uint32>(256.0f * Clamp(color.z_, 0.0f, 0.999f));
     uint8 a = 255;
 
     data_[x + y * GetWidth()] = { r, g, b, a };

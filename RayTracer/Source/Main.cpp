@@ -23,7 +23,8 @@ int main()
     scene_objects.Add(MakeShared<Sphere>(Vec3(0.0f, -100.5f, -1.0f), 100.0f));
 
     // Ray tracing - Shoot a ray into the scene for each pixel
-    const uint32 samples_per_pixel = 100;
+    static const uint32 samples_per_pixel = 100;
+    static const uint32 max_bounces = 50;
     for (size_t j = image.GetHeight() - 1; ; --j)
     {
         LOG("Scanlines remaining: %i", j);
@@ -40,21 +41,29 @@ int main()
 
                 // Cast ray into the scene and accumulate the sample values
                 Ray ray = cam.GetRay(u, v);
-                pixel_color += RayTracer::CalcRayColor(ray, scene_objects);
+                pixel_color += RayTracer::CalcRayColor(ray, scene_objects, max_bounces);
             }
 
             // Calculate final color values by averaging all the samples
             pixel_color /= samples_per_pixel;
 
+            // Gamma correction 
+            // Image viewers assume images to be gamma corrected, i.e. the color values are transformed in some way
+            // before being stored as bytes. In this case we use Gamma 2, i.e. we raise the color to the power 1/gamma with gamma = 2,
+            // which is just the square root.
+            pixel_color.x_ = sqrtf(pixel_color.x_);
+            pixel_color.y_ = sqrtf(pixel_color.y_);
+            pixel_color.z_ = sqrtf(pixel_color.z_);
+
             // Convert to pixel coordinates and write color to the output image
-            size_t pixel_y = image.GetHeight() - 1 - j;
             size_t pixel_x = i;
+            size_t pixel_y = image.GetHeight() - 1 - j;
             image.SetPixel(pixel_x, pixel_y, pixel_color);
         }
 
         if(j==0)
         {
-            // Manually break out before overflow
+            // Break out before overflow
             break;
         }
     }

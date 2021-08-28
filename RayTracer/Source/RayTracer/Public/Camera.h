@@ -8,7 +8,7 @@ public:
     Camera() = default;
     Camera(float aspect_ratio, float focal_length);
 
-    Ray GetRay(float u, float v);
+    Ray GetRay(float u, float v) const;
 
 private:
     // Virtual Viewport
