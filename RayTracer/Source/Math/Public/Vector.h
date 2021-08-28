@@ -12,6 +12,7 @@ struct Vec3
     Vec3& operator+=(const Vec3& v);
     Vec3& operator*=(const float f);
     Vec3& operator/=(const float f);
+    Vec3& operator/=(const uint32 i);
 
     float Length() const;
     float LengthSquared() const;

@@ -38,6 +38,16 @@ Vec3& Vec3::operator/=(const float f)
     return *this *= 1 / f;
 }
 
+Vec3& Vec3::operator/=(const uint32 i)
+{
+    float scale = 1.0f / i;
+    x_ *= scale;
+    y_ *= scale;
+    z_ *= scale;
+
+    return *this;
+}
+
 float Vec3::Length() const
 {
     return sqrtf(LengthSquared());
