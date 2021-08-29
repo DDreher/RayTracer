@@ -19,7 +19,7 @@ bool HittableList::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_re
             has_hit_anything = true;
 
             // We only care about the closest object we hit
-            closest_t = hit_record.t_;
+            closest_t = tmp_hit_record.t_;
             hit_record = tmp_hit_record;
         }
     }
