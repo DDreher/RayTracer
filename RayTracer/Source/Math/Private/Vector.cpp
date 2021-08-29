@@ -88,6 +88,16 @@ Vec3 Vec3::Reflect(const Vec3& v, const Vec3& n)
     return v - 2.0f * Dot(v, n) * n;
 }
 
+Vec3 Vec3::Refract(const Vec3& v, const Vec3& n, const float etai_over_etat)
+{
+    // For implementation details and info about the underlying math check out
+    // https://raytracing.github.io/books/RayTracingInOneWeekend.html#dielectrics/snell'slaw
+    float cos_theta = fminf(Dot(-v, n), 1.0f);  // Simply the dot product here, because we assume v and n to be unit vectors
+    Vec3 refracted_dir_perpendicular = etai_over_etat * (v + cos_theta * n);
+    Vec3 refracted_dir_parallel = -sqrtf(fabsf(1.0f - refracted_dir_perpendicular.LengthSquared())) * n;
+    return refracted_dir_perpendicular + refracted_dir_parallel;
+}
+
 float Vec3::Length() const
 {
     return sqrtf(LengthSquared());

@@ -25,7 +25,7 @@ struct HitRecord
     inline void SetSurfaceNormal(const Ray& r,  const Vec3& outside_normal)
     {
         // We can check if the normal points towards/against the ray by calculating a dot product.
-        is_surface_outside_ = Dot(r.GetDirection(), outside_normal) < 0.0f;
+        is_surface_outside_ = Dot(r.direction_, outside_normal) < 0.0f;
         surface_normal_ = is_surface_outside_ ? outside_normal : -outside_normal;
     }
 };

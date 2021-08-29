@@ -39,7 +39,7 @@ Color RayTracer::CalcRayColor(const Ray& r, const IHittable& scene_objects, uint
 
     // linearly blend white and blue depending on the height of the y coordinate after scaling the ray direction to unit length
     // -> -1.0f <= y <= 1.0f
-    Vec3 direction = MakeUnitVec(r.GetDirection());
+    Vec3 direction = MakeUnitVec(r.direction_);
     float t = 0.5f * (direction.y_ + 1.0f); // scale to [0.0f, 1.0f] range
 
     // then do a simple lerp between the two colors

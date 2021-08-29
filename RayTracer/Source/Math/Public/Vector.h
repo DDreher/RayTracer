@@ -55,6 +55,16 @@ struct Vec3
     */
     static Vec3 Reflect(const Vec3& v, const Vec3& n);
 
+    /**
+    *    Refracts a vector according to Snell's law.
+    *
+    *    @param v   The unit vector to be refracted
+    *    @param n   The unit normal the vector is refrected along
+    *    @param etai_over_etat  Ratio between eta_t and eta_t, i.e. the refraction indices of the two materials the ray passes through
+    *    @return The refracted vector
+    */
+    static Vec3 Refract(const Vec3& v, const Vec3& n, const float etai_over_etat);
+
     float Length() const;
     float LengthSquared() const;
 
