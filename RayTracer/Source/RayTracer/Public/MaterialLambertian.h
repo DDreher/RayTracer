@@ -2,7 +2,7 @@
 #include "Material.h"
 
 /**
-*    Abstraction of a lambertian/diffuse material.
+*    Abstraction of lambertian/diffuse materials.
 *    This implementation always scatters and attenuates the color by its reflectance.
 *    Alternative: Scatter with no attenuation but absorb fraction 1.0f - reflectance of the rays (or a mixture of both options).
 */

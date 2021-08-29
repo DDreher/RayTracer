@@ -2,8 +2,7 @@
 #include "Material.h"
 
 /**
-*    Abstraction of a metal material.
-*    This implementation just reflects rays.
+*    Abstraction of metallic materials.
 */
 class Metal : public IMaterial
 {

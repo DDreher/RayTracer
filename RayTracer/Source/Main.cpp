@@ -1,6 +1,7 @@
 ﻿#include "Camera.h"
 #include "Hittable.h"
 #include "Image.h"
+#include "MaterialDielectric.h"
 #include "MaterialLambertian.h"
 #include "MaterialMetal.h"
 #include "Ray.h"
@@ -26,11 +27,14 @@ int main()
     SharedPtr<IMaterial> material_ground = MakeShared<Lambertian>(Color(0.8f, 0.8f, 0.0f));
     SharedPtr<IMaterial> material_metal = MakeShared<Metal>(Color(0.39f, 0.58f, 0.92f), 0.3f);
     SharedPtr<IMaterial> material_metal_fuzzier = MakeShared<Metal>(Color(0.39f, 0.58f, 0.92f), 1.0f);
+    SharedPtr<IMaterial> material_glass = MakeShared<Dieletric>(1.5f);
 
-    scene_objects.Add(MakeShared<Sphere>(Vec3(0.0f, -100.5f, -1.0f), 100.0f, material_ground));
-    scene_objects.Add(MakeShared<Sphere>(Vec3(1.5f, 0.0f, -2.0f), 0.5f, material_diffuse));
-    scene_objects.Add(MakeShared<Sphere>(Vec3(-.5f, 0.0f, -1.0f), 0.5f, material_metal));
-    scene_objects.Add(MakeShared<Sphere>(Vec3(1.5f, 0.0f, -1.0f), 0.5f, material_metal_fuzzier));
+    scene_objects.Add(MakeShared<Sphere>(Point3(0.0f, -100.5f, -1.0f), 100.0f, material_ground));
+    scene_objects.Add(MakeShared<Sphere>(Point3(0.0f, 0.0f, -1.0f), 0.5f, material_diffuse));
+    scene_objects.Add(MakeShared<Sphere>(Point3(-1.0f, 0.0f, -1.0f), 0.5f, material_glass));
+    scene_objects.Add(MakeShared<Sphere>(Point3(-1.0f, 0.0f, -1.0f), -0.4f, material_glass));   // We can fake hollow glass spheres by using a negative radius
+                                                                                                // -> surface normals point inwards
+    scene_objects.Add(MakeShared<Sphere>(Point3(1.0f, 0.0f, -1.0f), 0.5f, material_metal_fuzzier));
 
     // Ray tracing - Shoot a ray into the scene for each pixel
     static const uint32 samples_per_pixel = 100;
