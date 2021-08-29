@@ -3,7 +3,8 @@
 bool Metal::Scatter(const Ray& ray, const HitRecord& hit_record, Color& attenuation, Ray& scattered_ray) const
 {
     // Reflect incoming ray along the surface normal
-    Vec3 scatter_direction = Vec3::Reflect(MakeUnitVec(ray.direction_), hit_record.surface_normal_);
+    Vec3 reflected_ray_dir = Vec3::Reflect(MakeUnitVec(ray.direction_), hit_record.surface_normal_);
+    Vec3 scatter_direction = reflected_ray_dir + fuzziness_ * Vec3::GetRandomPointInUnitSphere();
     scattered_ray = Ray(hit_record.position_, scatter_direction);
     attenuation = albedo_;
 
