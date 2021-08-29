@@ -75,6 +75,19 @@ Point3 Vec3::GetRandomPointInUnitSphere()
     return p;
 }
 
+Vec3 Vec3::GetRandomPointInUnitDisk()
+{
+    Vec3 point;
+    bool has_found_point = false;
+    while (has_found_point == false)
+    {
+        point = Vec3(RandRange(-1.0f, 1.0f), RandRange(-1.0f, 1.0f), 0.0f);
+        has_found_point = point.LengthSquared() < 1.0f;
+    }
+
+    return point;
+}
+
 Vec3 Vec3::GetRandomUnitVector()
 {
     return MakeUnitVec(GetRandomPointInUnitSphere());

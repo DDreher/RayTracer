@@ -9,24 +9,24 @@ static inline const float INF = std::numeric_limits<float>::infinity();
 static inline const float PI = 3.1415926535897932f;
 
 //~ Utility functions
-static inline float DegToRads(float degrees)
+inline float DegToRads(float degrees)
 {
-    return degrees * PI / 100.0f;
+    return degrees * PI / 180.0f;
 }
 
 /** Returns a random float in range [0, 1) */
-static inline float Rand()
+inline float Rand()
 {
     return rand() / (RAND_MAX + 1.0f); 
 }
 
 /** Returns a random float in range [min, max) */
-static inline float RandRange(float min, float max)
+inline float RandRange(float min, float max)
 {
     return min + (max - min) * Rand();
 }
 
-static inline float Clamp(float f, float min, float max)
+inline float Clamp(float f, float min, float max)
 {
     if (f < min) { return min; }
     else if (f > max) { return max; }

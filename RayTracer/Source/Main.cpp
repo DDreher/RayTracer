@@ -17,24 +17,35 @@ int main()
     const size_t image_height = static_cast<size_t>(image_width / aspect_ratio);
     Image image(image_width, image_height);
 
-    const float focal_length = 1.0f;
-    Camera cam(aspect_ratio, focal_length);
+    static const Vec3 WORLD_UP = Vec3(0.0f, 1.0f, 0.0f);
+    static const Vec3 WORLD_FORWARD = Vec3(0.0f, 0.0f, -1.0f);
+    static const Vec3 WORLD_ORIGIN = Vec3(0.0f, 0.0f, 0.0f);
+
+    Vec3 camera_pos = WORLD_ORIGIN + Vec3(-2.0f, 0.7f, .75f);
+    Vec3 camera_look_at = Vec3(0.0f, 0.0f, -1.0f);
+
+    CameraAttributes cam_attributes;
+    cam_attributes.vertical_fov_degrees_ = 45.0f;
+    cam_attributes.focus_distance_ = (camera_pos - Vec3(-1.0f, 0.0f, -1.0f)).Length();
+    cam_attributes.aperture_ = 0.025f;
+    Camera cam(camera_pos, camera_look_at, WORLD_UP, cam_attributes);
 
     // World
     HittableList scene_objects;
     
-    SharedPtr<IMaterial> material_diffuse = MakeShared<Lambertian>(Color(0.8f, 0.2f, 0.2f));
-    SharedPtr<IMaterial> material_ground = MakeShared<Lambertian>(Color(0.8f, 0.8f, 0.0f));
-    SharedPtr<IMaterial> material_metal = MakeShared<Metal>(Color(0.39f, 0.58f, 0.92f), 0.3f);
-    SharedPtr<IMaterial> material_metal_fuzzier = MakeShared<Metal>(Color(0.39f, 0.58f, 0.92f), 1.0f);
-    SharedPtr<IMaterial> material_glass = MakeShared<Dieletric>(1.5f);
-
+    SharedPtr<IMaterial> material_diffuse = MakeShared<Lambertian>(Color(0.9f, 0.1f, 0.1f));
+    SharedPtr<IMaterial> material_ground = MakeShared<Lambertian>(Color(107.0f / 255.0f, 142.0f / 255.0f, 35.0f / 255.0f));
+    SharedPtr<IMaterial> material_metal_rougher = MakeShared<Metal>(Color(0.39f, 0.58f, 0.92f), 0.8f);
+    SharedPtr<IMaterial> material_metal_smooth = MakeShared<Metal>(Color(240.0f / 255.0f, 225.0f / 255.0f, 48.0f / 255.0f), 0.01f);
+    SharedPtr<IMaterial> material_glass = MakeShared<Dielectric>(1.5f);
+    
     scene_objects.Add(MakeShared<Sphere>(Point3(0.0f, -100.5f, -1.0f), 100.0f, material_ground));
-    scene_objects.Add(MakeShared<Sphere>(Point3(0.0f, 0.0f, -1.0f), 0.5f, material_diffuse));
     scene_objects.Add(MakeShared<Sphere>(Point3(-1.0f, 0.0f, -1.0f), 0.5f, material_glass));
     scene_objects.Add(MakeShared<Sphere>(Point3(-1.0f, 0.0f, -1.0f), -0.4f, material_glass));   // We can fake hollow glass spheres by using a negative radius
                                                                                                 // -> surface normals point inwards
-    scene_objects.Add(MakeShared<Sphere>(Point3(1.0f, 0.0f, -1.0f), 0.5f, material_metal_fuzzier));
+    scene_objects.Add(MakeShared<Sphere>(Point3(0.0f, 0.0f, -1.0f), 0.5f, material_diffuse));
+    scene_objects.Add(MakeShared<Sphere>(Point3(1.0f, 0.0f, -1.0f), 0.5f, material_metal_rougher));
+    scene_objects.Add(MakeShared<Sphere>(Point3(2.0f, 0.0f, -1.0f), 0.5f, material_metal_smooth));
 
     // Ray tracing - Shoot a ray into the scene for each pixel
     static const uint32 samples_per_pixel = 100;

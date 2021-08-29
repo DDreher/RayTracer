@@ -4,10 +4,10 @@
 /**
 *    Abstraction of dieletric materials, i.e. water, glass, etc.
 */
-class Dieletric : public IMaterial
+class Dielectric : public IMaterial
 {
 public:
-    Dieletric(float refraction_index)
+    Dielectric(float refraction_index)
         : refraction_index_(refraction_index)
     {
     };

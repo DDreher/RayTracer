@@ -1,6 +1,6 @@
 #include "MaterialDielectric.h"
 
-bool Dieletric::Scatter(const Ray& ray, const HitRecord& hit_record, Color& attenuation, Ray& scattered_ray) const
+bool Dielectric::Scatter(const Ray& ray, const HitRecord& hit_record, Color& attenuation, Ray& scattered_ray) const
 {
     attenuation = Color::WHITE; // Glass absorbs nothing
     Vec3 unit_direction = MakeUnitVec(ray.direction_);
@@ -32,7 +32,7 @@ bool Dieletric::Scatter(const Ray& ray, const HitRecord& hit_record, Color& atte
     return true;
 }
 
-float Dieletric::CalculateReflectance(float cosine, float refraction_index)
+float Dielectric::CalculateReflectance(float cosine, float refraction_index)
 {
     float r0 = (1.0f - refraction_index) / (1.0f+refraction_index);
     r0 = r0 * r0;

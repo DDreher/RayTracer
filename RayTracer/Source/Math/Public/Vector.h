@@ -39,6 +39,14 @@ struct Vec3
     static Vec3 GetRandomPointInUnitSphere();
 
     /**
+    *    Get a random point in a unit disk.
+    *    The position is calculated using a rejection method.
+    *
+    *    @return The calculated point
+    */
+    static Vec3 GetRandomPointInUnitDisk();
+
+    /**
     *    Get the vector to a random point inside a unit sphere using a rejection method.
     *    Once a vector is found, it's normalized.
     *    
