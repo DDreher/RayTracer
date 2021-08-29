@@ -12,7 +12,7 @@ int main()
 {
     // Image definitions
     const float aspect_ratio = 16.0f / 9.0f;
-    const size_t image_width = 400;
+    const size_t image_width = 512;
     const size_t image_height = static_cast<size_t>(image_width / aspect_ratio);
     Image image(image_width, image_height);
 
@@ -24,11 +24,13 @@ int main()
     
     SharedPtr<IMaterial> material_diffuse = MakeShared<Lambertian>(Color(0.8f, 0.2f, 0.2f));
     SharedPtr<IMaterial> material_ground = MakeShared<Lambertian>(Color(0.8f, 0.8f, 0.0f));
-    SharedPtr<IMaterial> material_metal = MakeShared<Metal>(Color(0.39f, 0.58f, 0.92f));
-    
+    SharedPtr<IMaterial> material_metal = MakeShared<Metal>(Color(0.39f, 0.58f, 0.92f), 0.3f);
+    SharedPtr<IMaterial> material_metal_fuzzier = MakeShared<Metal>(Color(0.39f, 0.58f, 0.92f), 1.0f);
+
     scene_objects.Add(MakeShared<Sphere>(Vec3(0.0f, -100.5f, -1.0f), 100.0f, material_ground));
     scene_objects.Add(MakeShared<Sphere>(Vec3(1.5f, 0.0f, -2.0f), 0.5f, material_diffuse));
     scene_objects.Add(MakeShared<Sphere>(Vec3(-.5f, 0.0f, -1.0f), 0.5f, material_metal));
+    scene_objects.Add(MakeShared<Sphere>(Vec3(1.5f, 0.0f, -1.0f), 0.5f, material_metal_fuzzier));
 
     // Ray tracing - Shoot a ray into the scene for each pixel
     static const uint32 samples_per_pixel = 100;
