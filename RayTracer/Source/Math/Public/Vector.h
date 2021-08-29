@@ -14,11 +14,44 @@ struct Vec3
     Vec3& operator/=(const float f);
     Vec3& operator/=(const uint32 i);
 
+    /**
+    *    Get a random vector in range [0.0f, 1.0f)
+    *    
+    *    @return the random vector
+    */
+    static Vec3 Random();
+
+    /**
+    *    Get a random vector in range [min, max)
+    *    
+    *    @param min the lower bound of the range
+    *    @param max the upper bound of the range
+    *    @return the random vector
+    */
+    static Vec3 Random(float min, float max);
+
+    /**
+    *    Get a random point in a unit sphere.
+    *    The position is calculated using a rejection method.
+    *    
+    *    @return The calculated point
+    */
+    static Vec3 GetRandomPointInUnitSphere();
+
+    /**
+    *    Get the vector to a random point inside a unit sphere using a rejection method.
+    *    Once a vector is found, it's normalized.
+    *    
+    *    @return A random unit vector.
+    */
+    static Vec3 GetRandomUnitVector();
+
     float Length() const;
     float LengthSquared() const;
 
 public:
     static const Vec3 WHITE;
+    static const Vec3 BLACK;
 
     union
     {
