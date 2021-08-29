@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 //~ Constants
+#define SMALL_NUMBER (1.e-8f)
 static inline const float INF = std::numeric_limits<float>::infinity();
 static inline const float PI = 3.1415926535897932f;
 

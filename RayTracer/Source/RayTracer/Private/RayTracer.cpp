@@ -1,6 +1,7 @@
+#include "Hittable.h"
+#include "Material.h"
 #include "RayTracer.h"
 #include "Vector.h"
-#include "Sphere.h"
 
 Color RayTracer::CalcRayColor(const Ray& r, const IHittable& scene_objects, uint32 num_bounces)
 {
@@ -17,19 +18,21 @@ Color RayTracer::CalcRayColor(const Ray& r, const IHittable& scene_objects, uint
     HitRecord hit_record;
     if (scene_objects.Hit(r, t_min, t_max, hit_record))
     {
-        // Calculate color for a diffuse (matte) material.
-        // Diffuse materials take on the color of their surroundings.
-        // Rays are reflected in random directions or absorbed.
-        
-        // Lambertian reflection
-        // Reflect along the direction of a normalized vector pointing to a random point on the surface of a unit sphere tangent to the hit point of the surface.
-        // Alternative: Pick a random point on a hemisphere in which the surface normal is in.
-        const Point3 reflection_target = hit_record.position_ + hit_record.surface_normal_ + Vec3::GetRandomUnitVector();
-        const Ray reflected_ray = Ray(hit_record.position_, reflection_target - hit_record.position_);
+        Ray scattered_ray;
+        Color attenuation;  // How much energy to absorb
 
-        // Then cast the child ray into the scene
-        static const float reflectance_factor = 0.5f;   // absorb half the energy on each bounce
-        return reflectance_factor * CalcRayColor(reflected_ray, scene_objects, num_bounces-1);
+        // Check for color contribution depending on the object's material
+        if(hit_record.material_->Scatter(r, hit_record, attenuation, scattered_ray))
+        {
+            // Ray was scattered -> Cast scattered child ray into the scene
+            // And accumulate color contributions from other bounces
+            return attenuation * CalcRayColor(scattered_ray, scene_objects, num_bounces - 1);
+        }
+        else
+        {   
+            // Ray was fully absorbed -> Black
+            return Color::BLACK;
+        }
     }
 
     // If there's no intersection simply calculate background color

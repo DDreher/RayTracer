@@ -80,6 +80,14 @@ Vec3 Vec3::GetRandomUnitVector()
     return MakeUnitVec(GetRandomPointInUnitSphere());
 }
 
+Vec3 Vec3::Reflect(const Vec3& v, const Vec3& n)
+{
+    // We basically project v onto n, multiply it by 2 and subtract it from v, because v points in.
+    // n is a unit vector, so we can save the division operation in the projection.
+    // Good recap for this: https://www.youtube.com/watch?v=naaeH1qbjdQ
+    return v - 2.0f * Dot(v, n) * n;
+}
+
 float Vec3::Length() const
 {
     return sqrtf(LengthSquared());
@@ -88,4 +96,9 @@ float Vec3::Length() const
 float Vec3::LengthSquared() const
 {
     return x_ * x_ + y_ * y_ + z_ * z_;
+}
+
+bool Vec3::IsZero(float tolerance) const
+{
+    return (fabsf(x_) < tolerance && fabsf(y_) < tolerance && fabsf(z_) < tolerance);
 }

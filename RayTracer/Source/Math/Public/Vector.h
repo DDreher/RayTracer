@@ -46,8 +46,25 @@ struct Vec3
     */
     static Vec3 GetRandomUnitVector();
 
+    /**
+    *    Reflects a vector along a given normal.
+    *    
+    *    @param v   The vector to be reflected
+    *    @param n   The unit normal the vector is reflected along
+    *    @return The reflected vector
+    */
+    static Vec3 Reflect(const Vec3& v, const Vec3& n);
+
     float Length() const;
     float LengthSquared() const;
+
+    /**
+    *    Checks if a vector is (nearly) zero.
+    *    
+    *    @param tolerance   The tolerance under which the element is assumed to be zero
+    *    @return True if all elements of a vector are below the given tolerance.
+    */
+    bool IsZero(float tolerance = SMALL_NUMBER) const;
 
 public:
     static const Vec3 WHITE;
