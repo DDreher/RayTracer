@@ -13,8 +13,6 @@ public:
     virtual bool Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_record) const override;
     // End IHittable
 
-    static Vec3 RandomUnit(float min, float max);
-
 private:
     Vec3 position_;
     float radius_ = 0.0f;
