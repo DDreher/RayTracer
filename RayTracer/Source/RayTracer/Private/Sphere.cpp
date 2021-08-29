@@ -48,7 +48,6 @@ bool Sphere::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_record) 
     hit_record.position_ = r.At(t);
     Vec3 outside_normal = (hit_record.position_ - position_) / radius_;  // Divide by the sphere radius so we get a unit vec
     hit_record.SetSurfaceNormal(r, outside_normal);
+    hit_record.material_ = material_;
     return true;
 }
-
-

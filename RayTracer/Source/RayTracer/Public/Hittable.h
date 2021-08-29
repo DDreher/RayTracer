@@ -9,8 +9,9 @@ struct HitRecord
 {
     Point3 position_;
     Vec3 surface_normal_;
+    SharedPtr<class IMaterial> material_;
     float t_ = 0.0f;
-    bool is_surface_outside = false;
+    bool is_surface_outside_ = false;
 
     /**
     *    Determine if the ray hit the inside or the outside of an object at geometry time.
@@ -24,8 +25,8 @@ struct HitRecord
     inline void SetSurfaceNormal(const Ray& r,  const Vec3& outside_normal)
     {
         // We can check if the normal points towards/against the ray by calculating a dot product.
-        is_surface_outside = Dot(r.GetDirection(), outside_normal) < 0.0f;
-        surface_normal_ = is_surface_outside ? outside_normal : -outside_normal;
+        is_surface_outside_ = Dot(r.GetDirection(), outside_normal) < 0.0f;
+        surface_normal_ = is_surface_outside_ ? outside_normal : -outside_normal;
     }
 };
 

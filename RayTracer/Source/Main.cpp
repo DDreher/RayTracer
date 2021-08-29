@@ -1,10 +1,11 @@
-﻿#include "Hittable.h"
+﻿#include "Camera.h"
+#include "Hittable.h"
 #include "Image.h"
+#include "MaterialLambertian.h"
 #include "Ray.h"
 #include "RayTracer.h"
 #include "Sphere.h"
 #include "Vector.h"
-#include "Camera.h"
 
 int main()
 {
@@ -19,8 +20,11 @@ int main()
 
     // World
     HittableList scene_objects;
-    scene_objects.Add(MakeShared<Sphere>(Vec3(0.0f, 0.0f, -1.0f), 0.5f));
-    scene_objects.Add(MakeShared<Sphere>(Vec3(0.0f, -100.5f, -1.0f), 100.0f));
+
+    SharedPtr<IMaterial> material_ground = MakeShared<Lambertian>(Color(0.5f, 0.5f, 0.5f));
+
+    scene_objects.Add(MakeShared<Sphere>(Vec3(0.0f, 0.0f, -1.0f), 0.5f, material_ground));
+    scene_objects.Add(MakeShared<Sphere>(Vec3(0.0f, -100.5f, -1.0f), 100.0f, material_ground));
 
     // Ray tracing - Shoot a ray into the scene for each pixel
     static const uint32 samples_per_pixel = 100;
