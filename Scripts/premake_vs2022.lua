@@ -29,7 +29,7 @@ workspace (ProjectName)
 	warnings "default"
 	characterset ("MBCS")
 	rtti "Off"
-	toolset "v142"
+	toolset "v143"
 	cppdialect "C++latest"
 	--flags {"FatalWarnings"}
 	
@@ -71,11 +71,13 @@ project (ProjectName)
 
 	disablewarnings 
 	{
-        "4100", -- unreferenced formal paramter
+        "4100", -- unreferenced formal parameter
 		"4189"  -- local variable initalized but not referenced
 	}
 
+	AddSpdlog()
 	AddSTB()
+	AddAssimp()
 
 	filter "files:**/ThirdParty/**.*"
 		flags "NoPCH"

@@ -3,7 +3,7 @@
 bool Dielectric::Scatter(const Ray& ray, const HitRecord& hit_record, Color& attenuation, Ray& scattered_ray) const
 {
     attenuation = Color::WHITE; // Glass absorbs nothing
-    Vec3 unit_direction = MakeUnitVec(ray.direction_);
+    Vec3 unit_direction = Normalize(ray.direction_);
 
     // When ray is in the material with higher refractive index, there is no real solution to Snell's law (which is used to calculate the refracted ray)
     // -> There is no refraction possible, so the ray has to be reflected.

@@ -145,7 +145,7 @@ inline Vec3 Cross(const Vec3& a, const Vec3& b)
         a.data_[0] * b.data_[1] - a.data_[1] * b.data_[0]);
 }
 
-inline Vec3 MakeUnitVec(Vec3 v)
+inline Vec3 Normalize(Vec3 v)
 {
     return v / v.Length();
 }
