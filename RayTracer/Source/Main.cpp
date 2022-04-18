@@ -7,18 +7,16 @@ int main()
 
     // Set up settings
     RenderOutputSettings output_settings;
-    output_settings.SetOutputSize(512, 16.0f / 9.0f);
+    output_settings.SetOutputSize(1920, 16.0f / 9.0f);
 
     RenderQualitySettings quality_settings;
     quality_settings.samples_per_pixel_ = 50;
-    quality_settings.max_bounces_ = 100;
+    quality_settings.max_bounces_ = 200;
 
-    RayTracerSettings settings;
-    settings.output_settings_ = output_settings;
-    settings.quality_settings_ = quality_settings;
+    RayTracerSettings settings{ quality_settings, output_settings };
 
     // Set up scene
-    Scene scene = Scene::CreateBunnyScene();
+    Scene scene = Scene::CreateCubeScene();
 
     // Do the raytracing
     RayTracer raytracer(settings);

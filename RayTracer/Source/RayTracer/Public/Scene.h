@@ -12,5 +12,6 @@ struct Scene
     HittableList entities_;
 
     static Scene CreateBunnyScene();
+    static Scene CreateCubeScene();
 };
 

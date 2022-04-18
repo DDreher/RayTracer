@@ -1,11 +1,10 @@
 #include "Triangle.h"
 
-Triangle::Triangle(Point3 v0, Point3 v1, Point3 v2, Vec3 normal, const SharedPtr<IMaterial>& material)
-    : v0_(v0), v1_(v1), v2_(v2), surface_normal_(normal), material_(material)
+Triangle::Triangle(Vertex v0, Vertex v1, Vertex v2, const SharedPtr<IMaterial>& material)
+    : v0_(v0), v1_(v1), v2_(v2), material_(material)
 {
-    v0v1_ = v1_ - v0_;
-    v0v2_ = v2_ - v0_;
-    //surface_normal_ = Cross(v0v1_, v0v2_); // TODO: This didn't work properly... Have to understand why!
+    v0v1_ = v1_.position_ - v0_.position_;
+    v0v2_ = v2_.position_ - v0_.position_;
 }
 
 bool Triangle::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_record) const
@@ -28,7 +27,7 @@ bool Triangle::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_record
 
     float inv_determinant = 1.0f / determinant;
 
-    Vec3 t_axis = r.origin_ - v0_;
+    Vec3 t_axis = r.origin_ - v0_.position_;
     float u = Dot(t_axis, p_vec) * inv_determinant;
     if (u < 0.0f || u > 1.0f)
     {
@@ -52,9 +51,11 @@ bool Triangle::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_record
         return false;
     }
 
+    hit_record.u_ = u;
+    hit_record.v_ = v;
     hit_record.t_ = t;
     hit_record.position_ = r.At(t);
-    Vec3 outside_normal = surface_normal_;
+    Vec3 outside_normal = u * v0_.normal_ + v * v1_.normal_ + (1.0f - u - v) * v2_.normal_;
     hit_record.SetSurfaceNormal(r, outside_normal);
     hit_record.material_ = material_;
 
