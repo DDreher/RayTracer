@@ -22,7 +22,7 @@ struct HitRecord
     *    @param r   The ray for which we determine the direction of the face it hit
     *    @param outside_normal The normal at the hit point which points outside of the object
     */
-    inline void SetSurfaceNormal(const Ray& r,  const Vec3& outside_normal)
+    inline void SetSurfaceNormal(const Ray& r, const Vec3& outside_normal)
     {
         // We can check if the normal points towards/against the ray by calculating a dot product.
         is_surface_outside_ = Dot(r.direction_, outside_normal) < 0.0f;
@@ -54,5 +54,5 @@ public:
     void Add(const SharedPtr<IHittable>& object);
 
 private:
-    Array<SharedPtr<IHittable>> objects_;
+    Array<SharedPtr<IHittable>> hittables_;
 };

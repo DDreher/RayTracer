@@ -1,10 +1,13 @@
 #include "Image.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb/stb_image_write.h"
 
 Image::Image(size_t width, size_t height)
     : width_(width), height_(height)
 {
+    CHECK(width > 0 && height > 0);
     data_ = new PixelData[width * height];
 }
 
@@ -33,5 +36,5 @@ void Image::Save(const char* path)
     static const int bytes_per_row = static_cast<int>(GetWidth() * sizeof(PixelData));
     static const int num_components = 4;    // rgba
     int result = stbi_write_png(path, static_cast<int>(GetWidth()), static_cast<int>(GetHeight()), num_components, static_cast<void*>(data_), bytes_per_row);
-    assert(result != 0);
+    CHECK(result != 0);
 }

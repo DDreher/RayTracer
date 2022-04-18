@@ -33,6 +33,12 @@ public:
 
     void SetPixel(size_t x, size_t y, Color color);
 
+    /**
+    *   Saves the image in png format at the given path relative to the working directory.
+    *   e.g: "output.png" will be saved at `{working_dir}/output.png`.
+    *   
+    *   @param path output path (including filename and extension) relative to the working directory.
+    */
     void Save(const char* path);
 
     size_t GetWidth() const { return width_; }

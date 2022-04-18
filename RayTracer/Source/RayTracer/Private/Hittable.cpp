@@ -12,9 +12,9 @@ bool HittableList::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_re
     float closest_t = t_max;
 
     // Check all objects in the scene for intersections
-    for (const SharedPtr<IHittable>& object : objects_)
+    for (const SharedPtr<IHittable>& hittable : hittables_)
     {
-        if (object->Hit(r, t_min, closest_t, tmp_hit_record))
+        if (hittable->Hit(r, t_min, closest_t, tmp_hit_record))
         {
             has_hit_anything = true;
 
@@ -29,10 +29,10 @@ bool HittableList::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_re
 
 void HittableList::Clear()
 {
-    objects_.clear();
+    hittables_.clear();
 }
 
 void HittableList::Add(const SharedPtr<IHittable>& object)
 {
-    objects_.push_back(object);
+    hittables_.push_back(object);
 }

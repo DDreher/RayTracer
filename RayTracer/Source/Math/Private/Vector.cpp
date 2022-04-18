@@ -90,7 +90,7 @@ Vec3 Vec3::GetRandomPointInUnitDisk()
 
 Vec3 Vec3::GetRandomUnitVector()
 {
-    return MakeUnitVec(GetRandomPointInUnitSphere());
+    return Normalize(GetRandomPointInUnitSphere());
 }
 
 Vec3 Vec3::Reflect(const Vec3& v, const Vec3& n)
