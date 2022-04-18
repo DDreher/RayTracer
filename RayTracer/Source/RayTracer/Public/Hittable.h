@@ -12,6 +12,8 @@ struct HitRecord
     SharedPtr<class IMaterial> material_;
     float t_ = 0.0f;
     bool is_surface_outside_ = false;
+    float u_ = 0.0f;
+    float v_ = 0.0f;
 
     /**
     *    Determine if the ray hit the inside or the outside of an object at geometry time.

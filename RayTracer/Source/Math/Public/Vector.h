@@ -84,9 +84,18 @@ struct Vec3
     */
     bool IsZero(float tolerance = SMALL_NUMBER) const;
 
+    /**
+     *  Creates a vector with random component values in range [0.0f, 1.0f].
+     */
+    static inline Vec3 MakeRandomColor()
+    {
+        return Vec3(RandRange(0.0f, 1.0f), RandRange(0.0f, 1.0f), RandRange(0.0f, 1.0f));
+    }
+
 public:
     static const Vec3 WHITE;
     static const Vec3 BLACK;
+    static const Vec3 GOLD;
 
     union
     {

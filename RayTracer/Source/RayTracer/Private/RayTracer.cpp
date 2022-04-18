@@ -56,7 +56,7 @@ void RayTracer::Trace(const Scene& scene)
     // Shoot a ray into the scene for each pixel
     for (size_t j = image.GetHeight() - 1; ; --j)
     {
-        LOG("Scanlines remaining: {}", j);
+        LOG("Scanlines remaining: {}", j+1);
         for (size_t i = 0; i < image_width; ++i)
         {
             Color pixel_color;
