@@ -9,8 +9,8 @@ Camera::Camera(const Vec3& position, const Vec3& look_at, const Vec3& up, const 
     : position_(position)
     , attributes_(attributes)
 {
-    cam_forward_ = MakeUnitVec(position_ - look_at);
-    cam_right_ = MakeUnitVec(Cross(up, cam_forward_));
+    cam_forward_ = Normalize(position_ - look_at);
+    cam_right_ = Normalize(Cross(up, cam_forward_));
     cam_up_ = Cross(cam_forward_, cam_right_);
 
     UpdateViewport();

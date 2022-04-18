@@ -84,9 +84,18 @@ struct Vec3
     */
     bool IsZero(float tolerance = SMALL_NUMBER) const;
 
+    /**
+     *  Creates a vector with random component values in range [0.0f, 1.0f].
+     */
+    static inline Vec3 MakeRandomColor()
+    {
+        return Vec3(RandRange(0.0f, 1.0f), RandRange(0.0f, 1.0f), RandRange(0.0f, 1.0f));
+    }
+
 public:
     static const Vec3 WHITE;
     static const Vec3 BLACK;
+    static const Vec3 GOLD;
 
     union
     {
@@ -145,7 +154,7 @@ inline Vec3 Cross(const Vec3& a, const Vec3& b)
         a.data_[0] * b.data_[1] - a.data_[1] * b.data_[0]);
 }
 
-inline Vec3 MakeUnitVec(Vec3 v)
+inline Vec3 Normalize(Vec3 v)
 {
     return v / v.Length();
 }
