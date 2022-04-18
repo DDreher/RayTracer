@@ -53,50 +53,103 @@ void RayTracer::Trace(const Scene& scene)
     size_t image_height = settings_.output_settings_.image_height_;
     Image image(image_width, image_height);
 
-    // Shoot a ray into the scene for each pixel
-    for (size_t j = image.GetHeight() - 1; ; --j)
+    // Figure out tasks to be done
+    uint32 num_available_threads = static_cast<uint32>(std::thread::hardware_concurrency() - 2);  // -2 to keep everything responsible.
+    uint32 num_worker_threads = Clamp<uint32>(settings_.num_threads_, 1, num_available_threads);
+
+    const size_t tile_width = image.GetWidth() / num_worker_threads;
+    const size_t tile_height = image.GetHeight() / num_worker_threads;
+    const size_t num_tiles_x = (image.GetWidth() + tile_width - 1) / tile_width;
+    const size_t num_tiles_y = (image.GetHeight() + tile_height - 1) / tile_height;
+
+    CHECK(num_tiles_x * tile_width >= image_width);
+    CHECK(num_tiles_y * tile_height >= image_height);
+
+    Array<TileDescriptor> tile_descriptors;
+    for(size_t tile_y=0; tile_y < num_tiles_y; ++tile_y)
     {
-        LOG("Scanlines remaining: {}", j+1);
-        for (size_t i = 0; i < image_width; ++i)
+        for (size_t tile_x = 0; tile_x < num_tiles_x; ++tile_x)
         {
-            Color pixel_color;
-
-            // Calculate multiple samples per pixel for antialiasing
-            for (uint32_t sample_idx = 0; sample_idx < settings_.quality_settings_.samples_per_pixel_; ++sample_idx)
-            {
-                // Coordinates in viewport space
-                float u = static_cast<float>(i + Rand()) / (image_width - 1.0f);
-                float v = static_cast<float>(j + Rand()) / (image_height - 1.0f);
-
-                // Cast ray into the scene and accumulate the sample values
-                Ray ray = scene.camera_.GetRay(u, v);
-                pixel_color += RayTracer::CalcRayColor(ray, scene.entities_, settings_.quality_settings_.max_bounces_);
-            }
-
-            // Calculate final color values by averaging all the samples
-            pixel_color /= settings_.quality_settings_.samples_per_pixel_;
-
-            // Gamma correction 
-            // Image viewers assume images to be gamma corrected, i.e. the color values are transformed in some way
-            // before being stored as bytes. In this case we use Gamma 2, i.e. we raise the color to the power 1/gamma with gamma = 2,
-            // which is just the square root.
-            pixel_color.x_ = sqrtf(pixel_color.x_);
-            pixel_color.y_ = sqrtf(pixel_color.y_);
-            pixel_color.z_ = sqrtf(pixel_color.z_);
-
-            // Convert to pixel coordinates and write color to the output image
-            size_t pixel_x = i;
-            size_t pixel_y = image.GetHeight() - 1 - j;
-            image.SetPixel(pixel_x, pixel_y, pixel_color);
-        }
-
-        if (j == 0)
-        {
-            // Break out before overflow
-            break;
+            tile_descriptors.emplace_back(tile_x*tile_width, tile_y*tile_height, tile_width, tile_height);
         }
     }
 
+    size_t descriptors_per_thread = (tile_descriptors.size() + num_worker_threads -1) / num_worker_threads;
+
+    LOG("Start path tracing on {} threads", num_worker_threads);
+
+    Array<std::thread> worker_threads;
+    for(uint32 i=0; i<num_worker_threads; ++i)
+    {
+            const size_t start_offset = i * descriptors_per_thread;
+            const size_t end_offset = std::min(i * descriptors_per_thread + descriptors_per_thread, tile_descriptors.size());
+            Array<TileDescriptor> tasks = Array<TileDescriptor>(tile_descriptors.begin() + start_offset, tile_descriptors.begin() + end_offset);
+
+            worker_threads.push_back(
+                std::thread([this, &scene, &image, tasks](){
+                    this->TraceTile(scene, image, tasks);
+                })
+            );
+    }
+
+    // Wait until all worker threads have finished
+    for(auto& t : worker_threads)
+    {
+        t.join();
+    }
+
+    // Finally save rendered image
     image.Save(settings_.output_settings_.output_name_.c_str());
     LOG("Done! Saved output image as '{}'", settings_.output_settings_.output_name_);
+}
+
+void RayTracer::TraceTile(const Scene& scene, Image& image, Array<TileDescriptor> tasks)
+{
+    for(const auto& task : tasks)
+    {
+        size_t end_y = task.start_y + task.tile_height;
+        size_t end_x = task.start_x + task.tile_width;
+
+        // Shoot a ray into the scene for each pixel of the tile
+        for (size_t y = task.start_y; y < end_y; ++y)
+        {
+            for (size_t x = task.start_x; x < end_x; ++x)
+            {
+                if(y >= image.GetHeight() || x >= image.GetWidth())
+                {
+                    continue;
+                }
+
+                Color pixel_color;
+
+                // Calculate multiple samples per pixel for antialiasing
+                for (uint32_t sample_idx = 0; sample_idx < settings_.quality_settings_.samples_per_pixel_; ++sample_idx)
+                {
+                    // Coordinates in viewport space
+                    float u = static_cast<float>(x + Rand()) / (image.GetWidth() - 1.0f);
+                    float v = static_cast<float>(y + Rand()) / (image.GetHeight() - 1.0f);
+
+                    // Cast ray into the scene and accumulate the sample values
+                    Ray ray = scene.camera_.GetRay(u, v);
+                    pixel_color += RayTracer::CalcRayColor(ray, scene.entities_, settings_.quality_settings_.max_bounces_);
+                }
+
+                // Calculate final color values by averaging all the samples
+                pixel_color /= settings_.quality_settings_.samples_per_pixel_;
+
+                // Gamma correction 
+                // Image viewers assume images to be gamma corrected, i.e. the color values are transformed in some way
+                // before being stored as bytes. In this case we use Gamma 2, i.e. we raise the color to the power 1/gamma with gamma = 2,
+                // which is just the square root.
+                pixel_color.x_ = sqrtf(pixel_color.x_);
+                pixel_color.y_ = sqrtf(pixel_color.y_);
+                pixel_color.z_ = sqrtf(pixel_color.z_);
+
+                // Convert to pixel coordinates and write color to the output image
+                size_t pixel_x = x;
+                size_t pixel_y = image.GetHeight() - 1 - y;
+                image.SetPixel(pixel_x, pixel_y, pixel_color);
+            }
+        }
+    }
 }

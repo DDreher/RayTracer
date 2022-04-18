@@ -14,11 +14,19 @@ bool Triangle::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_record
     // ... ray-triangle-intersection: https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/why-are-triangles-useful
     
     // In this case we use the Möller-Trumbore algorithm:
+    // Paper: Fast, minimum storage ray-triangle intersection.
+    // Tomas Möller and Ben Trumbore. 
+    // Journal of Graphics Tools, 2(1):21--28, 1997. 
+    // http://www.graphics.cornell.edu/pubs/1997/MT97.pdf
+    // 
+    // Resources:
     // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/moller-trumbore-ray-triangle-intersection
+    // https://www.youtube.com/watch?v=fK1RPmF_zjQ
+
 
     Vec3 p_vec = Cross(r.direction_, v0v2_);
     float determinant = Dot(v0v1_, p_vec);
-    if(IsNearlyZero(determinant) || determinant < 0.0f)
+    if(IsNearlyZero(determinant))
     {
         // if the determinant is negative the triangle is backfacing
         // if the determinant is close to 0, the ray misses the triangle
@@ -44,7 +52,6 @@ bool Triangle::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_record
     }
 
     float t = Dot(v0v2_, q_axis) * inv_determinant;
-
     if (t < t_min || t > t_max)
     {
         // We only care about the closest surface we hit
@@ -55,8 +62,10 @@ bool Triangle::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_record
     hit_record.v_ = v;
     hit_record.t_ = t;
     hit_record.position_ = r.At(t);
-    Vec3 outside_normal = u * v0_.normal_ + v * v1_.normal_ + (1.0f - u - v) * v2_.normal_;
-    hit_record.SetSurfaceNormal(r, outside_normal);
+
+    const float w = 1.0f - u - v;
+    Vec3 normal = Normalize(w * v0_.normal_ + u * v1_.normal_ + v * v2_.normal_);
+    hit_record.SetSurfaceNormal(r, normal);
     hit_record.material_ = material_;
 
     return true;

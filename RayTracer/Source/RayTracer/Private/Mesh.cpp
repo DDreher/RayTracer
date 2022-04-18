@@ -15,8 +15,7 @@ MeshData MeshData::Load(const String& asset_path)
 
     Array<char> bytes = FileIO::ReadFile(asset_path);
 
-    uint32 importer_flags = aiProcess_ConvertToLeftHanded |
-        aiProcessPreset_TargetRealtime_Fast;
+    uint32 importer_flags = aiProcessPreset_TargetRealtime_Fast;
     const aiScene* scene = importer.ReadFileFromMemory(bytes.data(), bytes.size(), importer_flags);
     CHECK_MSG(scene != nullptr, "Failed to load mesh from file: {}", asset_path);
 
