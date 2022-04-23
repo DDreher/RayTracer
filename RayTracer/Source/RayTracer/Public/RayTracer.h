@@ -1,6 +1,7 @@
 #pragma once
-#include "Ray.h"
 #include "Hittable.h"
+#include "Image.h"
+#include "Ray.h"
 #include "Scene.h"
 
 struct RenderQualitySettings
@@ -28,6 +29,15 @@ struct RayTracerSettings
 {
     RenderQualitySettings quality_settings_;
     RenderOutputSettings output_settings_;
+    uint32 num_threads_ = UINT_MAX;
+};
+
+struct TileDescriptor
+{
+    size_t start_x;
+    size_t start_y;
+    size_t tile_width;
+    size_t tile_height;
 };
 
 class RayTracer
@@ -54,4 +64,6 @@ public:
 private:
 
     RayTracerSettings settings_;
+
+    void TraceTile(const Scene& scene, Image& image, Array<TileDescriptor> tasks);
 };

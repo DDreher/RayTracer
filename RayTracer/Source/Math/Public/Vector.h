@@ -96,6 +96,7 @@ public:
     static const Vec3 WHITE;
     static const Vec3 BLACK;
     static const Vec3 GOLD;
+    static const Vec3 SILVER;
 
     union
     {

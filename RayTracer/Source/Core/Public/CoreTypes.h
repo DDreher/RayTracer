@@ -58,21 +58,18 @@ constexpr SharedPtr<T> MakeShared(Args&& ... args)
 template<typename T>
 using WeakPtr = std::weak_ptr<T>;
 
-//~ Array Type
+//~ Data Containers
 template<typename T>
 using Array = std::vector<T>;
 
-//~ Hashmap Type
 template<typename T, typename T2>
 using Map = std::unordered_map<T, T2>;
 
-//~ Deque Type
 template<typename T>
 using Deque = std::deque<T>;
 
-//~ Queue Type
 template<typename T>
 using Queue = std::queue<T>;
 
-//~ String Type
+//~ Misc
 using String = std::string;
