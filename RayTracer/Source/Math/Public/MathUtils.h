@@ -26,12 +26,13 @@ inline float RandRange(float min, float max)
     return min + (max - min) * Rand();
 }
 
-/** Clamps a given float f to range [min, max] */
-inline float Clamp(float f, float min, float max)
+/** Clamps a given value v to range [min, max] */
+template <typename T>
+inline T Clamp(T v, T min, T max)
 {
-    if (f < min) { return min; }
-    else if (f > max) { return max; }
-    else { return f; }
+    if (v < min) { return min; }
+    else if (v > max) { return max; }
+    else { return v; }
 }
 
 /**

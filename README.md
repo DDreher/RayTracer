@@ -4,7 +4,7 @@ A simple brute force path tracer written in C++.
 
 ![preview](preview.png)
 <p float="left">
-  <img src="/preview_bunny.png" width="49.5%" /> 
+  <img src="/preview_dragon.png" width="49.5%" /> 
   <img src="/preview_cubes.png" width="49.5%" />
 </p>
 
