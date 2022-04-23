@@ -44,7 +44,7 @@ This is an educational project. This means...
     - [x] Ray-Triangle-Intersection
     - [ ] Generic Vertex Data Interpolation
         - [x] Normal Interpolation
-    - [ ] Multithreading
+    - [x] Multithreading
     - [ ] GPU Acceleration (CUDA, Vulkan or D3D12)
     - [ ] Data-driven Scene Descriptions
 
