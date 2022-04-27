@@ -1,6 +1,7 @@
 #pragma once
 #include <cmath>
 #include <limits>
+#include <random>
 #include <stdlib.h>
 
 //~ Constants
@@ -17,7 +18,11 @@ inline float DegToRads(float degrees)
 /** Returns a random float in range [0.0, 1.0] */
 inline float Rand()
 {
-    return rand() / (RAND_MAX + 1.0f); 
+    // See: https://stackoverflow.com/questions/60450514/safe-random-number-generation-using-rand-or-stdrandom-device-in-c
+    thread_local std::random_device random_device;
+    thread_local std::mt19937 rng(random_device());
+    thread_local std::uniform_real_distribution<float> distribution;
+    return distribution(rng, decltype(distribution)::param_type{ 0.0f, 1.0f });
 }
 
 /** Returns a random float in range [min, max] */
