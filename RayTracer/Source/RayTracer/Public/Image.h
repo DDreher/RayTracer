@@ -28,9 +28,19 @@ struct PixelData
 class Image
 {
 public:
+    /**
+     * Creates an empty bitmap of size width x height x 4 (RGBA)
+     */
     Image(size_t width, size_t height);
+
+    /**
+     * Loads a RGBA bitmap from path
+     */
+    Image(const String& path);
     ~Image();
 
+    Color GetPixel(size_t x, size_t y) const;
+    Color GetPixel(float u, float v) const;
     void SetPixel(size_t x, size_t y, Color color);
 
     /**

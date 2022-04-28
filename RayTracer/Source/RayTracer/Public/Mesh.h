@@ -6,8 +6,9 @@ struct MeshData
     static MeshData Load(const String& asset_path);
 
     Array<uint32> indices_;
-    Array<Vec3> vertices_;
-    Array<Vec3> normals_;
+    Array<Vec4> vertices_;
+    Array<Vec4> normals_;
+    Array<Vec3> tex_coords_;
 };
 
 struct CubeMeshData : public MeshData
@@ -38,69 +39,103 @@ struct CubeMeshData : public MeshData
         vertices_ =
         {
             // front
-            Vec3(-1.0f, -0.5f,  -0.5f),
-            Vec3(-0.5f,  0.5f,  -0.5f),
-            Vec3(0.5f,  0.5f,   -0.5f),
-            Vec3(0.5f, -0.5f,   -0.5f),
+            Vec4(-.5f, -0.5f, -0.5f, 1.0f),
+            Vec4(-0.5f,  0.5f, -0.5f, 1.0f),
+            Vec4(0.5f,  0.5f, -0.5f, 1.0f),
+            Vec4(0.5f, -0.5f, -0.5f, 1.0f),
             // back
-            Vec3(-0.5f, -0.5f, 0.5f),
-            Vec3(0.5f, -0.5f, 0.5f),
-            Vec3(0.5f,  0.5f, 0.5f),
-            Vec3(-0.5f,  0.5f, 0.5f),
+            Vec4(-0.5f, -0.5f, 0.5f, 1.0f),
+            Vec4(0.5f, -0.5f, 0.5f , 1.0f),
+            Vec4(0.5f,  0.5f, 0.5f , 1.0f),
+            Vec4(-0.5f,  0.5f, 0.5f, 1.0f),
             // top
-            Vec3(-0.5f, 0.5f, -0.5f),
-            Vec3(-0.5f, 0.5f,  0.5f),
-            Vec3(0.5f, 0.5f,  0.5f),
-            Vec3(0.5f, 0.5f, -0.5f),
+            Vec4(-0.5f, 0.5f, -0.5f, 1.0f),
+            Vec4(-0.5f, 0.5f,  0.5f, 1.0f),
+            Vec4(0.5f, 0.5f,  0.5f , 1.0f),
+            Vec4(0.5f, 0.5f, -0.5f , 1.0f),
             // bottom
-            Vec3(-0.5f, -0.5f, -0.5f),
-            Vec3(0.5f, -0.5f, -0.5f),
-            Vec3(0.5f, -0.5f,  0.5f),
-            Vec3(-0.5f, -0.5f,  0.5f),
+            Vec4(-0.5f, -0.5f, -0.5f, 1.0f),
+            Vec4(0.5f, -0.5f, -0.5f , 1.0f),
+            Vec4(0.5f, -0.5f, 0.5f  , 1.0f),
+            Vec4(-0.5f, -0.5f, 0.5f , 1.0f),
             // left
-            Vec3(-0.5f, -0.5f,  0.5f),
-            Vec3(-0.5f,  0.5f,  0.5f),
-            Vec3(-0.5f,  0.5f, -0.5f),
-            Vec3(-0.5f, -0.5f, -0.5f),
+            Vec4(-0.5f, -0.5f, 0.5f , 1.0f),
+            Vec4(-0.5f,  0.5f, 0.5f , 1.0f),
+            Vec4(-0.5f,  0.5f, -0.5f, 1.0f),
+            Vec4(-0.5f, -0.5f, -0.5f, 1.0f),
             // right
-            Vec3(0.5f, -0.5f, -0.5f),
-            Vec3(0.5f,  0.5f, -0.5f),
-            Vec3(0.5f,  0.5f,  0.5f),
-            Vec3(0.5f, -0.5f,  0.5f)
+            Vec4(0.5f, -0.5f, -0.5f, 1.0f),
+            Vec4(0.5f,  0.5f, -0.5f, 1.0f),
+            Vec4(0.5f,  0.5f, 0.5f , 1.0f),
+            Vec4(0.5f, -0.5f, 0.5f , 1.0f)
         };
 
         normals_ =
         {
             // front
-            Vec3(0.0f, 0.0f, 1.0f),
-            Vec3(0.0f, 0.0f, 1.0f),
-            Vec3(0.0f, 0.0f, 1.0f),
-            Vec3(0.0f, 0.0f, 1.0f),
+            Vec4(0.0f, 0.0f, 1.0f, 0.0f),
+            Vec4(0.0f, 0.0f, 1.0f, 0.0f),
+            Vec4(0.0f, 0.0f, 1.0f, 0.0f),
+            Vec4(0.0f, 0.0f, 1.0f, 0.0f),
             // back
-            Vec3(0.0f, 0.0f, -1.0f),
-            Vec3(0.0f, 0.0f, -1.0f),
-            Vec3(0.0f, 0.0f, -1.0f),
-            Vec3(0.0f, 0.0f, -1.0f),
+            Vec4(0.0f, 0.0f, -1.0f, 0.0f),
+            Vec4(0.0f, 0.0f, -1.0f, 0.0f),
+            Vec4(0.0f, 0.0f, -1.0f, 0.0f),
+            Vec4(0.0f, 0.0f, -1.0f, 0.0f),
+            // top
+            Vec4(0.0f, 1.0f, 0.0f, 0.0f),
+            Vec4(0.0f, 1.0f, 0.0f, 0.0f),
+            Vec4(0.0f, 1.0f, 0.0f, 0.0f),
+            Vec4(0.0f, 1.0f, 0.0f, 0.0f),
+            // bottom
+            Vec4(0.0f, -1.0f, 0.0f, 0.0f),
+            Vec4(0.0f, -1.0f, 0.0f, 0.0f),
+            Vec4(0.0f, -1.0f, 0.0f, 0.0f),
+            Vec4(0.0f, -1.0f, 0.0f, 0.0f),
+            // left
+            Vec4(-1.0f, 0.0f, 0.0f, 0.0f),
+            Vec4(-1.0f, 0.0f, 0.0f, 0.0f),
+            Vec4(-1.0f, 0.0f, 0.0f, 0.0f),
+            Vec4(-1.0f, 0.0f, 0.0f, 0.0f),
+            // right
+            Vec4(1.0f, 0.0f, 0.0f, 0.0f),
+            Vec4(1.0f, 0.0f, 0.0f, 0.0f),
+            Vec4(1.0f, 0.0f, 0.0f, 0.0f),
+            Vec4(1.0f, 0.0f, 0.0f, 0.0f),
+        };
+
+        tex_coords_ =
+        {
+            // front
+            Vec3(0.0f, 1.0f, 0.0f),
+            Vec3(0.0f, 0.0f, 0.0f),
+            Vec3(1.0f, 0.0f, 0.0f),
+            Vec3(1.0f, 1.0f, 0.0f),
+            // back
+            Vec3(1.0f, 1.0f, 0.0f),
+            Vec3(0.0f, 1.0f, 0.0f),
+            Vec3(0.0f, 0.0f, 0.0f),
+            Vec3(1.0f, 0.0f, 0.0f),
             // top
             Vec3(0.0f, 1.0f, 0.0f),
+            Vec3(0.0f, 0.0f, 0.0f),
+            Vec3(1.0f, 0.0f, 0.0f),
+            Vec3(1.0f, 1.0f, 0.0f),
+            // botttom
+            Vec3(1.0f, 1.0f, 0.0f),
             Vec3(0.0f, 1.0f, 0.0f),
-            Vec3(0.0f, 1.0f, 0.0f),
-            Vec3(0.0f, 1.0f, 0.0f),
-            // bottom
-            Vec3(0.0f, -1.0f, 0.0f),
-            Vec3(0.0f, -1.0f, 0.0f),
-            Vec3(0.0f, -1.0f, 0.0f),
-            Vec3(0.0f, -1.0f, 0.0f),
+            Vec3(0.0f, 0.0f, 0.0f),
+            Vec3(1.0f, 0.0f, 0.0f),
             // left
-            Vec3(-1.0f, 0.0f, 0.0f),
-            Vec3(-1.0f, 0.0f, 0.0f),
-            Vec3(-1.0f, 0.0f, 0.0f),
-            Vec3(-1.0f, 0.0f, 0.0f),
+            Vec3(0.0f, 1.0f, 0.0f),
+            Vec3(0.0f, 0.0f, 0.0f),
+            Vec3(1.0f, 0.0f, 0.0f),
+            Vec3(1.0f, 1.0f, 0.0f),
             // right
+            Vec3(0.0f, 1.0f, 0.0f),
+            Vec3(0.0f, 0.0f, 0.0f),
             Vec3(1.0f, 0.0f, 0.0f),
-            Vec3(1.0f, 0.0f, 0.0f),
-            Vec3(1.0f, 0.0f, 0.0f),
-            Vec3(1.0f, 0.0f, 0.0f),
+            Vec3(1.0f, 1.0f, 0.0f)
         };
     }
 };
@@ -109,12 +144,19 @@ class Mesh : public HittableList
 {
 public:
     Mesh() {}
-    Mesh(const Vec3& position, float scale, const SharedPtr<IMaterial>& material, const String& asset_path);
-    Mesh(const Vec3& position, float scale, const SharedPtr<IMaterial>& material, const MeshData& mesh_data);
+    Mesh(const Vec3& position, float scale, const Mat4& rotation, const SharedPtr<IMaterial>& material, const String& asset_path);
+    Mesh(const Vec3& position, float scale, const Mat4& rotation, const SharedPtr<IMaterial>& material, const MeshData& mesh_data);
+
+    void CreateTriangleListFromMeshData();
+
+    // Begin IHittable
+    virtual bool Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_record) const override;
+    // End IHittable
 
 private:
     MeshData mesh_data_;
     Vec3 position_;
+    glm::mat4 rotation_ = glm::identity<glm::mat4>();
     float scale_ = 1.0f;
     SharedPtr<IMaterial> material_;
 };

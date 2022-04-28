@@ -9,9 +9,9 @@ Camera::Camera(const Vec3& position, const Vec3& look_at, const Vec3& up, const 
     : position_(position)
     , attributes_(attributes)
 {
-    cam_forward_ = Normalize(position_ - look_at);
-    cam_right_ = Normalize(Cross(up, cam_forward_));
-    cam_up_ = Cross(cam_forward_, cam_right_);
+    cam_forward_ = glm::normalize(position_ - look_at);
+    cam_right_ = glm::normalize(glm::cross(up, cam_forward_));
+    cam_up_ = glm::cross(cam_forward_, cam_right_);
 
     UpdateViewport();
 }
@@ -19,8 +19,8 @@ Camera::Camera(const Vec3& position, const Vec3& look_at, const Vec3& up, const 
 Ray Camera::GetRay(float u, float v) const
 {
     // Calculate offset on the lense for defocus blur
-    const Vec3 point_on_lense = attributes_.lens_radius_ * Vec3::GetRandomPointInUnitDisk();
-    const Vec3 offset = cam_right_ * point_on_lense.x_ + cam_up_ * point_on_lense.y_;
+    const Vec3 point_on_lense = attributes_.lens_radius_ * Vec3(glm::diskRand(1.0f), 0);
+    const Vec3 offset = cam_right_ * point_on_lense.x + cam_up_ * point_on_lense.y;
     const Vec3 ray_direction = viewport_lower_left_corner_ + u * horizontal_axis_ + v * vertical_axis_ - position_ - offset;
     return Ray(position_ + offset, ray_direction);
 }

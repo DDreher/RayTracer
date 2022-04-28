@@ -1,5 +1,6 @@
 #pragma once
 #include "Material.h"
+#include "Image.h"
 
 /**
 *    Abstraction of lambertian/diffuse materials.
@@ -9,13 +10,16 @@
 class Lambertian : public IMaterial
 {
 public:
-    Lambertian(const Color& color)
-        : albedo_(color)
+    Lambertian(const Color& color, SharedPtr<Image> tex = nullptr)
+        : albedo_(color),
+        tex_(tex)
     {};
 
     // Begin IMaterial
     virtual bool Scatter(const Ray& ray, const HitRecord& hit_record, Color& attenuation, Ray& scattered_ray) const override;
     // End IMaterial
+
+    SharedPtr<Image> tex_;
 
 public:
     Color albedo_;  // Measure of the diffuse reflection

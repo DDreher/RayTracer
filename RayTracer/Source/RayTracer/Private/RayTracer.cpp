@@ -9,7 +9,7 @@ Color RayTracer::CalcRayColor(const Ray& r, const IHittable& scene_objects, uint
     {
         // Reached the maximum number of bounces for the ray
         // -> No further contribution to the color
-        return Color::BLACK;
+        return colors::BLACK;
     }
 
     // Check for object intersections
@@ -31,7 +31,7 @@ Color RayTracer::CalcRayColor(const Ray& r, const IHittable& scene_objects, uint
         else
         {   
             // Ray was fully absorbed -> Black
-            return Color::BLACK;
+            return colors::BLACK;
         }
     }
 
@@ -39,12 +39,12 @@ Color RayTracer::CalcRayColor(const Ray& r, const IHittable& scene_objects, uint
 
     // linearly blend white and blue depending on the height of the y coordinate after scaling the ray direction to unit length
     // -> -1.0f <= y <= 1.0f
-    Vec3 direction = Normalize(r.direction_);
-    float t = 0.5f * (direction.y_ + 1.0f); // scale to [0.0f, 1.0f] range
+    Vec3 direction = glm::normalize(r.direction_);
+    float t = 0.5f * (direction.y + 1.0f); // scale to [0.0f, 1.0f] range
 
     // then do a simple lerp between the two colors
     static const Color other_color = Color(0.5f, 0.7f, 1.0f);
-    return (1.0f - t) * Color::WHITE + t * other_color;
+    return (1.0f - t) * colors::WHITE + t * other_color;
 }
 
 void RayTracer::Trace(const Scene& scene)
@@ -141,9 +141,9 @@ void RayTracer::TraceTile(const Scene& scene, Image& image, Array<TileDescriptor
                 // Image viewers assume images to be gamma corrected, i.e. the color values are transformed in some way
                 // before being stored as bytes. In this case we use Gamma 2, i.e. we raise the color to the power 1/gamma with gamma = 2,
                 // which is just the square root.
-                pixel_color.x_ = sqrtf(pixel_color.x_);
-                pixel_color.y_ = sqrtf(pixel_color.y_);
-                pixel_color.z_ = sqrtf(pixel_color.z_);
+                pixel_color.x = sqrtf(pixel_color.x);
+                pixel_color.y = sqrtf(pixel_color.y);
+                pixel_color.z = sqrtf(pixel_color.z);
 
                 // Convert to pixel coordinates and write color to the output image
                 size_t pixel_x = x;
