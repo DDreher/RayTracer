@@ -75,6 +75,7 @@ project (ProjectName)
 		"4189"  -- local variable initalized but not referenced
 	}
 
+	AddGLM()
 	AddSpdlog()
 	AddSTB()
 	AddAssimp()

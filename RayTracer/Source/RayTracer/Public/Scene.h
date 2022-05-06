@@ -11,6 +11,7 @@ struct Scene
     Camera camera_;
     HittableList entities_;
 
+    static Scene CreateTexScene();
     static Scene CreateBunnyScene();
     static Scene CreateCubeScene();
 };

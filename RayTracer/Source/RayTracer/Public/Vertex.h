@@ -3,7 +3,6 @@
 struct Vertex
 {
     Vec3 position_;
-    Vec3 normal_;
-    float u = 0.0f;
-    float v = 0.0f;
+    std::optional<Vec3> normal_;
+    std::optional<Vec3> tex_coords_;
 };

@@ -1,3 +1,11 @@
+function AddGLM()
+    defines { "MODULE_GLM" }
+
+	includedirs "$(SolutionDir)/ThirdParty/glm/"
+
+    filter {}
+end
+
 function AddSTB()  
     defines { "MODULE_STB" }
     includedirs {

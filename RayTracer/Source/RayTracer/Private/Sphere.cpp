@@ -16,9 +16,9 @@ bool Sphere::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_record) 
 
     // Solve the resulting quadratic equation with abc-formula
     Vec3 center_to_origin = r.origin_ - position_;
-    const float a = Dot(r.direction_, r.direction_);
-    const float half_b = Dot(center_to_origin, r.direction_);   // If we use half_b instead of b we can get rid of the factor 2.
-    const float c = center_to_origin.LengthSquared() - radius_ * radius_;
+    const float a = glm::dot(r.direction_, r.direction_);
+    const float half_b = glm::dot(center_to_origin, r.direction_);   // If we use half_b instead of b we can get rid of the factor 2.
+    const float c = glm::length2(center_to_origin) - radius_ * radius_;
     const float discriminant = half_b * half_b - a * c;
 
     if (discriminant < 0.0f)

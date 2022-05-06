@@ -5,7 +5,7 @@ A simple brute force path tracer written in C++.
 ![preview](preview.png)
 <p float="left">
   <img src="/preview_dragon.png" width="49.5%" /> 
-  <img src="/preview_cubes.png" width="49.5%" />
+  <img src="/preview_textured_mesh.png" width="49.5%" />
 </p>
 
 ## Disclaimer
@@ -34,7 +34,7 @@ This is an educational project. This means...
     - [ ] Motion Blur
     - [ ] Acceleration Structures / Bounding Volume Hierarchies
     - [ ] Solid Textures
-    - [ ] Image Texture Mapping
+    - [x] Texture Mapping
     - [ ] Ray-Rect-Intersection
     - [ ] Lights
     - [ ] Instancing
@@ -86,5 +86,7 @@ You don't have to copy files around if you run directly from within the IDE.
     * [Ray Tracing in One Weekend Book Series](https://raytracing.github.io/)
     * [Scratchapixel](https://www.scratchapixel.com)
 * Build configuration is powered by [Premake](https://premake.github.io/)
-* The renderer was tested with models taken from the [Stanford Computer Graphics Laboratory](https://graphics.stanford.edu/data/3Dscanrep/), e.g. the Stanford Bunny.
+* The renderer was tested with the following models...
+    * [Stanford Bunny and Dragon](https://graphics.stanford.edu/data/3Dscanrep/), by Stanford Computer Graphics Laboratory
+    * [Viking Room](https://sketchfab.com/3d-models/viking-room-a49f1b8e4f5c4ecf9e1fe7d81915ad38) by nigelgoh (CC BY 4.0)
     
