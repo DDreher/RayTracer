@@ -8,15 +8,6 @@ A simple path tracer written in C++.
   <img src="/Doc/preview_textured_mesh4.png" width="49.5%" />
 </p>
 
-## Disclaimer
-
-This is an educational project. This means...
-
-* I haven't put much effort into the data pipeline yet. Scenes and paths are hardcoded. You may have to adjust it for your needs.
-* The code is not optimized, neither in terms of run-time nor space complexity (though that will hopefully change at some point in the future).
-* As of right now no acceleration structures have been implemented. Therefore, rendering is especially slow for meshes.
-* I try to keep a clean architecture, but I don't promise anything :P
-
 ## Features and ToDos
 
 - [x] Feature Parity with `Raytracing In One Weekend`
@@ -80,6 +71,15 @@ You don't have to copy files around if you run directly from within the IDE.
 * [Assimp](https://github.com/assimp/assimp)
 * [spdlog](https://github.com/gabime/spdlog)
 * [STB](https://github.com/nothings/stb)
+
+## Disclaimer
+
+This is an educational project. This means...
+
+* I haven't put much effort into the data pipeline yet. Scenes and paths are hardcoded. You may have to adjust it for your needs.
+* The code is not optimized, neither in terms of run-time nor space complexity (though that will hopefully change at some point in the future).
+* As of right now no acceleration structures have been implemented. Therefore, rendering is especially slow for meshes.
+* I try to keep a clean architecture, but I don't promise anything :P
 
 ## Acknowledgments
 
