@@ -21,7 +21,7 @@ struct HitRecord
     *    If the normal points towards the ray, then is_front_face is true (the ray is outside the object).
     *    If the normal points away from the ray, then is_front_face is false (the ray is inside the object).
     *    
-    *    @param r   The ray for which we determine the direction of the face it hit
+    *    @param r The ray for which we determine the direction of the face it hit
     *    @param outside_normal The normal at the hit point which points outside of the object
     */
     inline void SetSurfaceNormal(const Ray& r, const Vec3& outside_normal)

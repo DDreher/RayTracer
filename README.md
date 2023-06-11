@@ -1,11 +1,11 @@
 # Ray Tracer
 
-A simple brute force path tracer written in C++.
+A simple path tracer written in C++.
 
-![preview](preview.png)
+![preview](Doc/output_rtiow_final.png)
 <p float="left">
-  <img src="/preview_dragon.png" width="49.5%" /> 
-  <img src="/preview_cubes.png" width="49.5%" />
+  <img src="/Doc/preview_dragon.png" width="49.5%" /> 
+  <img src="/Doc/preview_textured_mesh4.png" width="49.5%" />
 </p>
 
 ## Disclaimer
@@ -41,10 +41,11 @@ This is an educational project. This means...
     - [ ] Volume Rendering
 - [ ] Feature Parity with `Raytracing The Rest Of Your Life`
 - [ ] Additional Features
+    - [x] PNG Output
     - [x] Ray-Triangle-Intersection
     - [ ] Generic Vertex Data Interpolation
         - [x] Normal Interpolation
-    - [x] Multithreading
+    - [x] Poor man's Multithreading
     - [ ] GPU Acceleration (CUDA, Vulkan or D3D12)
     - [ ] Data-driven Scene Descriptions
 
@@ -82,7 +83,7 @@ You don't have to copy files around if you run directly from within the IDE.
 
 ## Acknowledgments
 
-* The implementation is based on the following resources:
+* The implementation is inspired by the following resources:
     * [Ray Tracing in One Weekend Book Series](https://raytracing.github.io/)
     * [Scratchapixel](https://www.scratchapixel.com)
 * Build configuration is powered by [Premake](https://premake.github.io/)

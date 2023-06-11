@@ -13,5 +13,6 @@ struct Scene
 
     static Scene CreateBunnyScene();
     static Scene CreateCubeScene();
+    static Scene CreateSpheresScene();
 };
 

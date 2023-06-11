@@ -77,19 +77,31 @@ struct Vec3
     float LengthSquared() const;
 
     /**
-    *    Checks if a vector is (nearly) zero.
-    *    
-    *    @param tolerance   The tolerance under which the element is assumed to be zero
-    *    @return True if all elements of a vector are below the given tolerance.
-    */
+     * @brief Checks if a vector is (nearly) zero.
+     *
+     * @param tolerance   The tolerance under which the element is assumed to be zero
+     * @return True if all elements of a vector are below the given tolerance.
+     */
     bool IsZero(float tolerance = SMALL_NUMBER) const;
 
     /**
-     *  Creates a vector with random component values in range [0.0f, 1.0f].
+     * @brief Creates a vector with random component values in range [0.0f, 1.0f].
+     * @return The random vector
      */
     static inline Vec3 MakeRandomColor()
     {
         return Vec3(RandRange(0.0f, 1.0f), RandRange(0.0f, 1.0f), RandRange(0.0f, 1.0f));
+    }
+
+    /**
+     * @brief Creates a vector with random component values in given range.
+     * @param min The minimum of the value range
+     * @param max The maximum of the value range
+     * @return The random vector
+     */
+    static inline Vec3 MakeRandomColorInRange(float min, float max)
+    {
+        return Vec3(RandRange(min, max), RandRange(min, max), RandRange(min, max));
     }
 
 public:

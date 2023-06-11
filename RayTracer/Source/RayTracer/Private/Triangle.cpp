@@ -65,7 +65,7 @@ bool Triangle::Hit(const Ray& r, float t_min, float t_max, HitRecord& hit_record
 
     const float w = 1.0f - u - v;
     Vec3 normal = Normalize(w * v0_.normal_ + u * v1_.normal_ + v * v2_.normal_);
-    hit_record.SetSurfaceNormal(r, normal);
+    hit_record.SetSurfaceNormal(r, (determinant >= 0.0f) ? normal : -normal);
     hit_record.material_ = material_;
 
     return true;
